@@ -1,0 +1,64 @@
+Annotation based Configuration in Spring
+-----------------------------------------------------------
+
+1. What is Annotation Based Configuration?
+   - In Spring Framework, you can manage beans and perform dependency injection using annotations instead of
+     XML configuration. Some key annotations used for this purpose are:
+         - @Component: Marks a class as a Spring-managed bean.
+         - @Bean : When custom configuration of bean required
+         - @Autowired: Automatically injects dependencies into a class.
+         - @Qualifier: Resolves ambiguity when multiple beans of the same type exist.
+         - @Configuration: Used to define a configuration class where beans are explicitly defined.
+         - @ComponentScan: Scans the specified package for beans annotated with @Component (or its specializations).
+   - Typically, @Configuration is used to define explicit beans using @Bean methods, and @ComponentScan is used to find
+     and register beans automatically (by scanning the package).
+
+2. Bean Configuration :
+    - You configure beans using annotations in Spring's Java-based configuration.
+    - Two core annotations to know:
+        - @Configuration
+        - @ComponentScan
+    - Both can be used together when you have beans with annotations (@Component, @Service, @Repository, or @Controller)
+      and manual definition (@Bean) on class where bean is manually defined.
+    - If no bean is created manually or configured using @Bean, we don't need configuration class. In this case,
+      @ComponentScan is put on main class.
+
+3. Beans are Singleton in Context by default
+    - In Spring, beans are singleton by default (unless explicitly defined otherwise).
+    - So, once created, any changes made will be applied on the same instance.
+    - If you want a new object each time, mark your bean as prototype scope.
+
+      @Component
+      @Scope("prototype")
+      public class PetrolEngine implements Engine {
+        //code
+      }
+
+4. @Configuration Annotation :
+    - Marks a class as a configuration class where you define beans using the @Bean annotation.
+    - Use @Configuration when you want to explicitly define beans using the @Bean annotation.
+    - It is required when you are defining custom beans that require manual configuration.
+    - Methods annotated with @Bean in class will create the beans in the context.
+
+5. @ComponentScan Annotation
+    - Tells Spring to automatically scan specific packages for beans annotated with @Component, @Service, @Repository,
+      or @Controller and register in context.
+    - Use @ComponentScan when you want Spring to automatically discover beans in a specified package or package(s).
+    - It eliminates the need to define beans manually, as Spring will scan and register them for you.
+
+6. Where to put @Component annotation ?
+    - There is no fix rule on it. It depends how do we want to initialize beans.
+    - No @Configuration Class:
+        - Put @ComponentScan on the main class if you want Spring to scan for components in specific packages.
+        - The main class is often the entry point to the application.
+        - If you want Spring to scan a package for components, you place @ComponentScan on the main class so Spring
+          can detect beans from that class.
+    - With a @Configuration Class:
+        - Put @ComponentScan on the @Configuration class to handle both manual bean definitions and component scanning.
+        - The @Configuration class is specifically designed for managing Spring configuration, including defining beans
+          and component scanning.
+        - Use both on same class when you typically centralize your configuration logic (e.g., defining beans and
+          component scanning) inside this class.
+        - You don't need @ComponentScan on the main class if it's already handled in a @Configuration class
+
+
